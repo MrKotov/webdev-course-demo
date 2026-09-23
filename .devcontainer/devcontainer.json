@@ -1,0 +1,33 @@
+{
+  // Web Development course workspace. Opens in GitHub Codespaces: nothing is installed on your laptop.
+  "name": "Web Development course",
+  // prebuilt Python image, so the first start does not compile Python; Node installs as a binary
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "22" },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  // the default 2-core machine is enough and uses the free quota slowest
+  "hostRequirements": { "cpus": 2 },
+  "forwardPorts": [3000, 5173, 8000],
+  "portsAttributes": {
+    "3000": { "label": "app (Node)" },
+    "5173": { "label": "frontend dev server" },
+    "8000": { "label": "app (Python)" }
+  },
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y --no-install-recommends sqlite3 && npm install -g @google/gemini-cli",
+  "postAttachCommand": "echo 'Workspace ready. Start the agent with: gemini'",
+  "customizations": {
+    "vscode": {
+      "extensions": ["GitHub.copilot-chat", "ms-python.python", "qwtel.sqlite-viewer"],
+      "settings": {
+        "files.trimTrailingWhitespace": true,
+        "editor.formatOnSave": false
+      }
+    },
+    "codespaces": {
+      "openFiles": ["README.md"]
+    }
+  }
+}

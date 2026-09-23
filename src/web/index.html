@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lab booking</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Lab workstation booking</h1>
+  <p class="sub">Book a workstation for one block of the day. <a href="/day.html">See a whole day</a></p>
+
+  <section id="signin">
+    <form id="login-form">
+      <div class="row">
+        <input name="email" type="email" placeholder="e-mail" autocomplete="username" required>
+        <input name="password" type="password" placeholder="password" autocomplete="current-password" required>
+        <button>Sign in</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="app" class="hidden">
+    <p>Signed in as <strong id="who"></strong> &middot; <button id="logout">sign out</button></p>
+
+    <form id="book-form">
+      <div class="row">
+        <select name="workstationId" id="workstations" required></select>
+        <select name="slot" id="slots" required></select>
+        <input name="date" type="date" required>
+      </div>
+      <div class="row">
+        <input name="purpose" placeholder="what for (optional)">
+        <input name="attendeeEmails" placeholder="others, comma separated e-mails">
+        <button>Book</button>
+      </div>
+    </form>
+
+    <h2>My bookings</h2>
+    <ul id="list"></ul>
+  </section>
+
+  <p class="msg" id="msg"></p>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

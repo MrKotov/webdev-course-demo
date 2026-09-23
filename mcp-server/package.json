@@ -1,0 +1,4 @@
+{
+  "//": "The app is ESM (\"type\": \"module\" in the root package.json). The Exercise 1 server is CommonJS, and this file tells Node so — nothing in server.js had to change.",
+  "type": "commonjs"
+}

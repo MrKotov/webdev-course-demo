@@ -1,0 +1,16 @@
+{
+  "name": "lab-booking",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Booking lab workstations for a time slot. Demo project for the Web Development course.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "start": "node --experimental-sqlite --no-warnings=ExperimentalWarning src/server.js",
+    "migrate": "node --experimental-sqlite --no-warnings=ExperimentalWarning src/db.js",
+    "test": "node --experimental-sqlite --no-warnings=ExperimentalWarning --test test/*.test.js"
+  },
+  "dependencies": {}
+}

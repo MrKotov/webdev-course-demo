@@ -1,0 +1,18 @@
+# Deploying on Render: one web service, built from the Dockerfile.
+# Migrations run at boot, so a deploy is a push and nothing else.
+services:
+  - type: web
+    name: lab-booking
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/slots
+    envVars:
+      - key: PORT
+        value: 3000
+      # The free plan has no disk, so the SQLite file is lost on every restart.
+      # That is fine for the demo; the moment it is not, this becomes the Neon URL
+      # and src/db.js grows a Postgres branch.
+      - key: DATABASE_URL
+        value: sqlite:/app/data/lab-booking.db
+      - key: SESSION_SECRET
+        generateValue: true

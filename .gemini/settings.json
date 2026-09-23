@@ -1,0 +1,11 @@
+{
+  "context": {
+    "fileName": ["AGENTS.md"]
+  },
+  "mcpServers": {
+    "course-lectures": {
+      "command": "node",
+      "args": ["mcp-server/server.js"]
+    }
+  }
+}

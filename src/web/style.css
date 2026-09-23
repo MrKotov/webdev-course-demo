@@ -1,0 +1,18 @@
+:root { color-scheme: light dark; --line: color-mix(in srgb, currentColor 18%, transparent); }
+* { box-sizing: border-box; }
+body { font: 16px/1.5 system-ui, sans-serif; margin: 0 auto; max-width: 46rem; padding: 2rem 1rem; }
+h1 { font-size: 1.4rem; margin: 0 0 .25rem; }
+nav a { margin-right: 1rem; }
+p.sub { margin: 0 0 1.5rem; opacity: .7; }
+form { display: grid; gap: .6rem; margin-bottom: 1.5rem; }
+.row { display: flex; flex-wrap: wrap; gap: .6rem; }
+.row > * { flex: 1 1 8rem; }
+input, select, button { font: inherit; padding: .5rem; border: 1px solid var(--line); border-radius: .4rem; background: transparent; color: inherit; }
+button { cursor: pointer; font-weight: 600; }
+ul { list-style: none; padding: 0; }
+li { border: 1px solid var(--line); border-radius: .5rem; padding: .75rem; margin-bottom: .5rem; display: flex; gap: 1rem; align-items: center; justify-content: space-between; }
+li small { display: block; opacity: .7; }
+li button { flex: 0 0 auto; }
+.msg { min-height: 1.5rem; }
+.msg.bad { color: #c0392b; }
+.hidden { display: none; }

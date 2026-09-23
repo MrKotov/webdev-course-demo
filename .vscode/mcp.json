@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "course-lectures": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["mcp-server/server.js"]
+    }
+  }
+}

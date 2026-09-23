@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lab booking &middot; one day</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>One day in the labs</h1>
+  <p class="sub"><a href="/">Back to my bookings</a></p>
+
+  <form id="pick"><div class="row"><input type="date" name="date" required><button>Show</button></div></form>
+  <ul id="list"></ul>
+  <p class="msg" id="msg"></p>
+
+  <script type="module">
+    const list = document.getElementById('list');
+    const msg = document.getElementById('msg');
+
+    document.getElementById('pick').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const date = new FormData(event.target).get('date');
+      const res = await fetch(`/api/bookings/day?date=${encodeURIComponent(date)}`);
+      const data = await res.json();
+      if (!res.ok) {
+        msg.textContent = data.error;
+        msg.classList.add('bad');
+        return;
+      }
+      msg.textContent = '';
+      list.innerHTML = data.bookings.length
+        ? data.bookings.map((b) => `<li><span><strong>${b.lab.code} / ${b.workstation.label}</strong>
+            <small>${b.slotTime} &middot; ${b.purpose || 'no purpose given'}</small></span></li>`).join('')
+        : '<li>The labs are free that day.</li>';
+    });
+  </script>
+</body>
+</html>
