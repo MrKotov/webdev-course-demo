@@ -97,6 +97,14 @@ for (const step of steps) {
     check('find_lecture has an input schema', Boolean(schema?.properties?.number), 'inputSchema.properties.number is missing');
     check('find_lecture has a real description', described, 'write a description a model can choose by, at least 20 characters');
     check('a second tool of your own', Array.isArray(tools) && tools.length >= 2, `found ${tools?.length ?? 0} tool(s)`);
+    // The description is the only thing the model reads when it decides which tool to call,
+    // so the rule that applies to find_lecture applies to every tool you add later too.
+    const thin = (Array.isArray(tools) ? tools : []).filter((t) => typeof t?.description !== 'string' || t.description.length < 20);
+    check(
+      'every tool has a real description',
+      Array.isArray(tools) && thin.length === 0,
+      thin.length ? `${thin.map((t) => t?.name ?? '(unnamed)').join(', ')}: a model picks a tool by reading this` : '',
+    );
   } else if (step.expect === 'lecture') {
     const text = reply.result?.content?.[0]?.text ?? '';
     const wanted = lectures.find((l) => l.number === step.message.params.arguments.number);

@@ -40,10 +40,22 @@ export function readCookie(req, name) {
   return null;
 }
 
-export function setCookie(res, name, value, { maxAge } = {}) {
-  const bits = [`${name}=${encodeURIComponent(value)}`, 'Path=/', 'HttpOnly', 'SameSite=Strict'];
+export function setCookie(res, name, value, { maxAge, sameSite = 'Strict' } = {}) {
+  const bits = [`${name}=${encodeURIComponent(value)}`, 'Path=/', 'HttpOnly', `SameSite=${sameSite}`];
   if (maxAge !== undefined) bits.push(`Max-Age=${maxAge}`);
-  res.setHeader('set-cookie', bits.join('; '));
+  appendCookie(res, bits.join('; '));
+}
+
+/** Add a cookie without dropping one that was already set on this response. */
+function appendCookie(res, value) {
+  const existing = res.getHeader('set-cookie');
+  res.setHeader('set-cookie', existing ? [].concat(existing, value) : value);
+}
+
+/** 302 somewhere else. Used by the OAuth flow, which is a browser redirect, not JSON. */
+export function redirect(res, location) {
+  res.writeHead(302, { location });
+  res.end();
 }
 
 /** Serve src/web/<file>. Returns false when there is nothing to serve. */

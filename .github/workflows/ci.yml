@@ -13,7 +13,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          # 22.9 or newer: the coverage thresholds in the next job landed in that version.
+          node-version: '22.x'
 
       - name: Install
         run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
@@ -21,8 +22,42 @@ jobs:
       - name: Tests
         run: npm test
 
-      - name: The MCP server from Exercise 1 still answers correctly
-        run: node mcp-server/check.mjs -- node mcp-server/server.js
+      - name: The MCP server still answers correctly
+        run: npm run mcp:check
 
       - name: The image builds
         run: docker build -t lab-booking:ci .
+
+  # Two gates, and the interesting thing about them is the gap between two numbers.
+  #
+  # `coverage:services` covers the layer that holds the rules. Its **line** coverage is
+  # 100%: every line of every rule is executed by some test. Its **branch** coverage is
+  # 85.71%, and that gap is not rounding.
+  #
+  # A line runs. A branch is a decision. A condition can be evaluated by every test you
+  # have and be true in none of them — the line is covered and the decision has never
+  # been made. So the headline number, the one everybody quotes, says 100% and is telling
+  # you less than you think, while the number nobody looks at is still asking a question.
+  #
+  # The branch gate is set just below the current value on purpose, rather than raised
+  # to silence the report. Run `npm run coverage:services` and read which file is short.
+  # Then go and look at it, and decide for yourself whether the branch nobody takes is
+  # dead code, a missing test, or a rule that was never written.
+  #
+  # Set both to 100 in your own project and keep them there.
+  #
+  # And neither number tells you the tests are any good: a line can be covered, and a
+  # branch taken, by a test that asserts nothing at all.
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+      - name: Install
+        run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
+      - name: The service layer
+        run: npm run coverage:services
+      - name: The whole project
+        run: npm run coverage

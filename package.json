@@ -5,12 +5,17 @@
   "description": "Booking lab workstations for a time slot. Demo project for the Web Development course.",
   "type": "module",
   "engines": {
-    "node": ">=22.5"
+    "node": ">=22.9"
   },
   "scripts": {
     "start": "node --experimental-sqlite --no-warnings=ExperimentalWarning src/server.js",
     "migrate": "node --experimental-sqlite --no-warnings=ExperimentalWarning src/db.js",
-    "test": "node --experimental-sqlite --no-warnings=ExperimentalWarning --test test/*.test.js"
+    "mcp": "node --experimental-sqlite --no-warnings=ExperimentalWarning mcp-server/server.js",
+    "test": "node --experimental-sqlite --no-warnings=ExperimentalWarning --test test/*.test.js",
+    "coverage:services": "node --experimental-sqlite --no-warnings=ExperimentalWarning --test --experimental-test-coverage --test-coverage-include='src/services/**' --test-coverage-exclude='test/**' --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=85 test/*.test.js",
+    "coverage": "node --experimental-sqlite --no-warnings=ExperimentalWarning --test --experimental-test-coverage --test-coverage-include='src/**' --test-coverage-exclude='test/**' --test-coverage-lines=90 --test-coverage-branches=85 test/*.test.js",
+    "mcp:check": "node --experimental-sqlite --no-warnings=ExperimentalWarning mcp-server/check.mjs -- npm run --silent mcp"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "//": "The service layer is gated at 100% of lines and only 85% of branches, and the gap between those two numbers is deliberate. See the comment in .github/workflows/ci.yml."
 }

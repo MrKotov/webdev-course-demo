@@ -1,39 +1,92 @@
 <!doctype html>
-<html lang="bg">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lab booking &middot; one day</title>
+  <title>One day in the labs · Lab booking</title>
+  <meta name="description" content="Everything booked in the labs on one day.">
   <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='14'>🖥️</text></svg>">
 </head>
 <body>
-  <h1>One day in the labs</h1>
-  <p class="sub"><a href="/">Back to my bookings</a></p>
+  <a class="skip" href="#main">Skip to the content</a>
 
-  <form id="pick"><div class="row"><input type="date" name="date" required><button>Show</button></div></form>
-  <ul id="list"></ul>
-  <p class="msg" id="msg"></p>
+  <header>
+    <div class="bar">
+      <span class="brand">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>
+        </svg>
+        Lab booking
+      </span>
+      <nav>
+        <a href="/">My bookings</a>
+        <a href="/day.html" aria-current="page">A whole day</a>
+      </nav>
+      <button id="theme" class="quiet icon" aria-label="Switch the theme" title="Switch the theme">◐</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <h1>One day in the labs</h1>
+    <p class="sub">Everything booked on a given day, across all three labs.</p>
+
+    <form id="pick" class="card">
+      <div class="row">
+        <div class="field">
+          <label for="date">Day</label>
+          <input id="date" type="date" name="date" required>
+        </div>
+        <div class="field" style="justify-content:end">
+          <button class="primary">Show the day</button>
+        </div>
+      </div>
+    </form>
+
+    <ul class="items" id="list" style="margin-top:var(--s5)"></ul>
+  </main>
+
+  <footer><div>Demo project for the Web Development course · Technical University of Sofia</div></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script type="module">
-    const list = document.getElementById('list');
-    const msg = document.getElementById('msg');
+    import * as api from '/api.js';
+    import { $, empty, esc, failed, render, setUpTheme, skeleton, today, whileBusy } from '/ui.js';
 
-    document.getElementById('pick').addEventListener('submit', async (event) => {
+    setUpTheme();
+    $('#date').value = today();
+
+    async function load(date) {
+      const list = $('#list');
+      list.innerHTML = skeleton(3);
+      try {
+        const { bookings } = await api.bookingsOn(date);
+        render(list, bookings.length
+          ? bookings.map((b) => `
+              <li>
+                <span>
+                  <strong>${esc(b.lab.code)} / ${esc(b.workstation.label)}</strong>
+                  <small>${esc(b.slotTime)} · ${b.purpose ? esc(b.purpose) : 'no purpose given'}</small>
+                </span>
+                <span class="tag">block ${b.slot}</span>
+              </li>`).join('')
+          : empty('The labs are free that day', 'Every workstation is open in all six blocks.'));
+      } catch (error) {
+        list.innerHTML = failed(error.message);
+      }
+    }
+
+    $('#pick').addEventListener('submit', (event) => {
       event.preventDefault();
       const date = new FormData(event.target).get('date');
-      const res = await fetch(`/api/bookings/day?date=${encodeURIComponent(date)}`);
-      const data = await res.json();
-      if (!res.ok) {
-        msg.textContent = data.error;
-        msg.classList.add('bad');
-        return;
-      }
-      msg.textContent = '';
-      list.innerHTML = data.bookings.length
-        ? data.bookings.map((b) => `<li><span><strong>${b.lab.code} / ${b.workstation.label}</strong>
-            <small>${b.slotTime} &middot; ${b.purpose || 'no purpose given'}</small></span></li>`).join('')
-        : '<li>The labs are free that day.</li>';
+      whileBusy(event.submitter, 'Loading…', () => load(date));
     });
+
+    $('#list').addEventListener('click', (event) => {
+      if (event.target.dataset.retry !== undefined) load($('#date').value);
+    });
+
+    load(today());
   </script>
 </body>
 </html>

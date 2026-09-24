@@ -7,8 +7,10 @@ import * as auth from '../services/auth.js';
 import { routes as authRoutes, SESSION_COOKIE } from './auth.js';
 import { routes as bookingRoutes } from './bookings.js';
 import { routes as catalogRoutes } from './catalog.js';
+import { routes as oauthRoutes } from './oauth.js';
+import { routes as suggestRoutes } from './suggest.js';
 
-const ROUTES = [...authRoutes, ...catalogRoutes, ...bookingRoutes].map((route) => ({
+const ROUTES = [...authRoutes, ...oauthRoutes, ...catalogRoutes, ...bookingRoutes, ...suggestRoutes].map((route) => ({
   ...route,
   // '/api/bookings/:id' -> /^\/api\/bookings\/(?<id>[^/]+)$/
   matcher: new RegExp(`^${route.path.replace(/:(\w+)/g, '(?<$1>[^/]+)')}$`),
@@ -47,9 +49,14 @@ export function createHandler(db) {
       if (hit.route.signedIn && !user) throw unauthorized();
 
       const body = req.method === 'POST' || req.method === 'PUT' ? await readJson(req) : {};
-      const result = await hit.route.handler({ db, req, res, url, token, user, body, params: hit.params });
+      const cookies = (name) => readCookie(req, name);
+      const result = await hit.route.handler({ db, req, res, url, token, user, body, cookies, params: hit.params });
+      // The OAuth routes answer with a redirect and have already finished. Everything
+      // else returns a value and lets this one line decide the status code.
+      if (res.headersSent) return undefined;
       return sendJson(res, hit.route.status ?? 200, result);
     } catch (err) {
+      if (res.headersSent) return undefined;
       if (err instanceof AppError) return sendJson(res, err.status, { error: err.message });
       console.error('unhandled', err);
       return sendJson(res, 500, { error: 'Something went wrong on our side' });

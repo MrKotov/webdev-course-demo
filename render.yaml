@@ -16,3 +16,18 @@ services:
         value: sqlite:/app/data/lab-booking.db
       - key: SESSION_SECRET
         generateValue: true
+      # Render fills this in with the service's own URL, which is what Google must
+      # have on its list of redirect URIs.
+      - key: PUBLIC_BASE_URL
+        fromService:
+          type: web
+          name: lab-booking
+          property: hostport
+      # sync: false means "ask me in the dashboard". The value is never in this file
+      # and never in git, which matters more than usual here: the repository is public.
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
