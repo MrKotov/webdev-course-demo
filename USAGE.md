@@ -21,7 +21,7 @@ the cost is whatever that tool's published rate makes them.
 Two things worth reading off this table rather than being told:
 
 1. The two most expensive sessions are the two where the agent's first answer was wrong
-   in a way that needed the work redone — Google sign-in and the MCP tools. Neither
+   in a way that needed the work redone: Google sign-in and the MCP tools. Neither
    failure was a bug; both were the agent solving the problem as stated while ignoring
    a constraint that lived in `AGENTS.md`. The fix was cheaper than the re-run.
 2. Output tokens are roughly a tenth of input by count and a much larger share of the

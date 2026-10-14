@@ -1,5 +1,5 @@
 -- Every call to the model provider, so the cost and the latency are facts rather
--- than impressions. The readiness report and lecture 10's arithmetic both read this.
+-- than impressions. The readiness report and lecture 12's arithmetic both read this.
 --
 -- Note what is NOT here: the prompt. It contains what a user typed, and a log is the
 -- easiest place in a system to leak personal data from. We keep the shape of the call

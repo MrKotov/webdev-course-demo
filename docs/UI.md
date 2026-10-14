@@ -11,7 +11,7 @@ readable, and nothing jumps around while it loads.
 
 - [x] **One spacing scale and one type scale.** Seven spacing steps, five type sizes, four
       radii, all declared as custom properties at the top of `src/web/style.css`.
-  - how I checked: `grep -c 'rem;' src/web/style.css` outside `:root` is 0 — every size in
+  - how I checked: `grep -c 'rem;' src/web/style.css` outside `:root` is 0, so every size in
     the stylesheet below the token block is a `var()`.
 - [x] **Responsive at 380, 768 and 1280 pixels wide.** One breakpoint, at 560px, and it only
       makes the form fields full width.
@@ -29,8 +29,8 @@ readable, and nothing jumps around while it loads.
       request going out.
   - how I checked: throttled the network to 3G and reloaded; the skeleton is on screen for
     about two seconds and the rows replace it without moving anything.
-- [x] **Empty.** "No bookings yet — Pick a workstation and a block above, and it will appear
-      here." A bordered panel, never a blank area.
+- [x] **Empty.** "No bookings yet", then "Pick a workstation and a block above, and it will
+      appear here." A bordered panel, never a blank area.
   - how I checked: cancelled everything and reloaded, in the browser, with the list
     scrolled into view.
 - [x] **Error.** A sentence a person can read, in place of the content, with a **Try again**
@@ -54,7 +54,7 @@ readable, and nothing jumps around while it loads.
 - [x] **The focused element is visible.** A three-pixel ring in the brand colour, on
       `:focus-visible` so it does not appear on a mouse click.
   - how I checked: tabbed through the page and read `getComputedStyle(document.activeElement)`
-    at each stop — `box-shadow` is the ring, and `matches(':focus-visible')` is true.
+    at each stop: `box-shadow` is the ring, and `matches(':focus-visible')` is true.
 - [x] **Text contrast is at least 4.5:1,** in both themes.
   - how I checked: computed the WCAG ratio in the console from the live computed colours.
     Light: body text 17.5:1, secondary text 6.0:1, labels 6.0:1, the primary button 5.8:1.
@@ -123,8 +123,8 @@ CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"   # or you
 | `10-mobile.png` | the whole page at 390px |
 | `11-day-view.png` | the second screen, showing the error state for real |
 
-**What is not in that list, and why.** The states that only exist after signing in — the
-loading skeleton, the empty list, the suggestion thinking and failing, a booking made —
+**What is not in that list, and why.** The states that only exist after signing in (the
+loading skeleton, the empty list, the suggestion thinking and failing, a booking made)
 cannot be reached by a headless browser that is handed a URL and nothing else, because
 signing in is a `POST`. Each of them is reproduced by hand in a few seconds, and the recipe
 is on the item itself above. That is weaker evidence than a picture, and it is written down

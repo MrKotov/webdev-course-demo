@@ -27,25 +27,35 @@
   {
     "number": 6,
     "title": "What the agent built, part 2",
-    "topics": "Components, state, SSR/CSR, containers, CI, environments"
+    "topics": "Components, state, data fetching, SSR/CSR, architectures"
   },
   {
     "number": 7,
+    "title": "Identity and delivery",
+    "topics": "Sign-in, authorization models, passkeys, CI/CD, platforms, deployment strategies"
+  },
+  {
+    "number": 8,
+    "title": "Design patterns for the web",
+    "topics": "Middleware, strategy, adapter, caching, pub/sub, resilience patterns"
+  },
+  {
+    "number": 9,
     "title": "Evaluating output",
     "topics": "Non-determinism, false positives, when to trust it"
   },
   {
-    "number": 8,
+    "number": 10,
     "title": "Testing and security of generated code",
     "topics": "Plus the classic attacks: CSRF, injection, DDoS"
   },
   {
-    "number": 9,
+    "number": 11,
     "title": "Working in someone else's codebase",
     "topics": "Mapping it, constraints, extending it"
   },
   {
-    "number": 10,
+    "number": 12,
     "title": "Inference economics and project defenses",
     "topics": "What running a model costs, and presenting your project"
   }

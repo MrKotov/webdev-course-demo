@@ -4,7 +4,7 @@ Book a workstation in one of the faculty labs for one block of the day.
 
 This is the demo project of the course „Програмиране за Интернет". It was built
 from the course template the same way your own project is: a spec, an agent, a
-migration per change, tests that state a rule. It is deliberately small — the
+migration per change, tests that state a rule. It is deliberately small, and the
 whole thing is meant to be read on screen in one lecture.
 
 What it does:
@@ -19,7 +19,7 @@ What it does:
 
 ## Run it
 
-Needs Node 22 or newer. There are no dependencies to install — the database is
+Needs Node 22 or newer. There are no dependencies to install: the database is
 the built-in `node:sqlite`, the HTTP server is the built-in `node:http`.
 
 ```bash
@@ -44,8 +44,8 @@ Demo accounts, created by migration `003`:
 
 Optional: without `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` the button says so
 instead of failing. To switch it on, create an OAuth client in the Google Cloud console,
-leave it in **Testing** mode with yourself as a test user — that is free and needs no app
-verification — and add `<PUBLIC_BASE_URL>/api/auth/google/callback` to its list of
+leave it in **Testing** mode with yourself as a test user, which is free and needs no app
+verification, and add `<PUBLIC_BASE_URL>/api/auth/google/callback` to its list of
 authorized redirect URIs. Google requires https for anything that is not localhost, so a
 codespace's forwarded URL and a Render URL both work; register every address you will
 sign in from.
@@ -53,8 +53,8 @@ sign in from.
 ## The suggestion feature
 
 `POST /api/suggest` takes a sentence and a day and answers with one workstation and block.
-Without `GEMINI_API_KEY` it falls back to the app's own rule — the earliest free block that
-fits — and says on screen which of the two you are looking at. That is not a degraded mode
+Without `GEMINI_API_KEY` it falls back to the app's own rule (the earliest free block that
+fits) and says on screen which of the two you are looking at. That is not a degraded mode
 to be fixed: it is how the tests and CI run, and the reason the feature cannot take the
 rest of the app down with it.
 
@@ -67,7 +67,7 @@ npm run mcp:check                            # the Exercise 1 conformance checks
 
 `mcp-server/server.js` is the protocol loop from Exercise 1, barely changed.
 `mcp-server/tools.js` is the tool table, and every tool calls a function in
-`src/services/` — never a query of its own. `MCP_TOKEN` is an ordinary session token, so
+`src/services/`, never a query of its own. `MCP_TOKEN` is an ordinary session token, so
 the agent may do exactly what that person may do.
 
 ## Run the tests
@@ -126,9 +126,9 @@ Read in this order.
 | `src/config.js` | Everything read from the environment. |
 | `src/model/gemini.js` | The only file that names the model provider. Returns `null` for every kind of failure. |
 | `src/providers/google.js` | The only file that talks to Google. The one network call of the sign-in flow. |
-| `src/web/` | The front end: two HTML pages, one token stylesheet, three modules — `api.js` talks to the server, `ui.js` draws, `app.js` holds the flows. No framework, no build step. |
+| `src/web/` | The front end: two HTML pages, one token stylesheet, three modules: `api.js` talks to the server, `ui.js` draws, `app.js` holds the flows. No framework, no build step. |
 | `migrations/` | Numbered SQL files. Applied in order, once each, recorded in `schema_migrations`. |
-| `legacy/` | The timetable grid, kept from the tool this app replaced. Still imported by the booking service — see `legacy/README.md`. |
+| `legacy/` | The timetable grid, kept from the tool this app replaced. Still imported by the booking service; see `legacy/README.md`. |
 | `test/` | Rules first, endpoints second. |
 | `mcp-server/` | The project's MCP server. `server.js` is the Exercise 1 protocol loop; `tools.js` is the tool table, and every tool goes through `src/services/`. |
 | `docs/UI.md` | The UI checklist this project is graded against, with the evidence. |
@@ -169,4 +169,4 @@ The free plan has no disk and sleeps after fifteen minutes, so bookings are lost
 restart and the first request after a quiet spell can take the best part of a minute. Both
 are written down in `READINESS.md` rather than discovered by whoever demonstrates it next.
 `DATABASE_URL` is what changes when the demo graduates from SQLite to Neon
-Postgres — and `src/db.js` is the only file that has to change with it.
+Postgres, and `src/db.js` is the only file that has to change with it.

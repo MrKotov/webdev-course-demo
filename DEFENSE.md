@@ -2,7 +2,7 @@
 
 Written for Exercise 5, before the defence, while the project is still fresh. This is the
 worked example: yours will be shorter and about your own project, but it should have the
-same shape — a claim, then the file that backs it.
+same shape: a claim, then the file that backs it.
 
 ## What it does
 
@@ -13,15 +13,15 @@ faculty and are not ours to redesign.
 
 ## The three files I will open
 
-1. **`src/services/bookings.js`** — because it is where every rule actually lives, and
+1. **`src/services/bookings.js`**, because it is where every rule actually lives, and
    because I can point at each rule and say which acceptance criterion it satisfies and
    which test names that criterion. It is also the file the coverage report keeps
    pointing at, which I have written into my gaps below.
-2. **`mcp-server/tools.js`** — because it is the shortest way to show why the layering
+2. **`mcp-server/tools.js`**, because it is the shortest way to show why the layering
    matters. Every tool calls a service function. If I had put the booking limit in the
-   route handler, an agent would be able to walk straight past it — and the same is true
+   route handler, an agent would be able to walk straight past it, and the same is true
    of every other rule, which cuts both ways.
-3. **`src/services/suggest.js`** — because it holds the three lines that stop a model's
+3. **`src/services/suggest.js`**, because it holds the three lines that stop a model's
    answer being believed, and those three lines are the difference between a feature and
    a liability.
 
@@ -30,7 +30,7 @@ faculty and are not ours to redesign.
 **Stack: Node 22, no dependencies at all.** I rejected Express and `passport` and an
 OAuth client library. The reason is not purity: it is that the whole thing must run in a
 codespace with no build step, the Dockerfile has to stay a single stage, and every line in
-the repository has to be one I can explain. The cost is real — I wrote the OAuth flow by
+the repository has to be one I can explain. The cost is real: I wrote the OAuth flow by
 hand, and a library would have handled token refresh, JWKS rotation and three providers
 that I do not. What would change my mind: a second provider, or any need to verify a token
 we did not fetch ourselves.
@@ -41,7 +41,7 @@ server arrived and became a second caller of the same rules. It is also the reas
 `src/services/catalog.js` exists while holding no rule at all: I would rather have one
 honest inconsistency than a rule with exceptions a reader has to memorise.
 
-**Authentication and authorization.** Authentication is "who are you" — a password checked
+**Authentication and authorization.** Authentication is "who are you", a password checked
 with scrypt and `timingSafeEqual`, or Google's word for it. Authorization is "may you do
 this", and it is a different question asked in a different place: in the service, on the
 row, every time. `listMine` filtering by owner is the clearest example, and the rule I
@@ -64,7 +64,7 @@ be verified against Google's public keys first.
 
 **Accounts linked on the provider's account id, not on the e-mail.** People change their
 address; they are still the same person. And an address Google has not verified is not
-evidence of anything, because anybody can type somebody else's address into a profile —
+evidence of anything, because anybody can type somebody else's address into a profile;
 linking on it would hand over that person's account.
 
 **The model: Gemini 2.5 Flash, hosted, named in one file.** A model that runs locally would
@@ -72,14 +72,14 @@ cost nothing per call and send nothing anywhere, which are two real advantages. 
 a ~100 MB dependency that does not fit in Render's free 512 MB, and the dependency rule
 above. So: hosted, with the provider named only in `src/model/gemini.js`, the same way
 `src/db.js` is the only file that names the database. The interesting design decision is not
-which model — it is that **the model's answer is checked against the real data before
+which model; it is that **the model's answer is checked against the real data before
 anybody sees it**, and that the feature works with no key at all.
 
 **What the MCP server exposes, and what it deliberately does not.** Six tools over the
 bookings, plus the two from Exercise 1. Every one goes through a service. There is no tool
 that runs a query, no tool that takes a user id as an argument, and no admin token: the
 server carries an ordinary session token and may do exactly what its owner may do. What it
-does not expose is anything about other people — `my_bookings` is scoped to the token's
+does not expose is anything about other people: `my_bookings` is scoped to the token's
 user, and there is no `list_all_users`.
 
 **The database shape.** Four entities and one many-to-many: `booking_attendees` joins
@@ -129,7 +129,7 @@ In the order I would fix them, from `READINESS.md`:
 
 The PKCE `code_challenge`. I know what it is for and I can say what attack it stops, and I
 wrote the four lines that produce it. What I could not have derived, and took from the
-specification, is *why S256 and not the plain method* — I know the plain method sends the
+specification, is *why S256 and not the plain method*. I know the plain method sends the
 verifier itself and is therefore useless against an attacker who can read the request, but
 I have not read enough of RFC 7636 to say what else the hash buys, or when the plain method
 is still considered acceptable. If I am asked, that is the answer I will give, rather than

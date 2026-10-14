@@ -31,8 +31,8 @@ const line = (b) => `#${b.id} ${b.workstation.label} in ${b.lab.code} on ${b.dat
 export const tools = [
   {
     name: 'find_lecture',
-    description: 'Look up a lecture of the Web Development course by its number (1 to 10). Returns the title and the topics it covers.',
-    inputSchema: { type: 'object', properties: { number: { type: 'integer', minimum: 1, maximum: 10 } }, required: ['number'] },
+    description: 'Look up a lecture of the Web Development course by its number (1 to 12). Returns the title and the topics it covers.',
+    inputSchema: { type: 'object', properties: { number: { type: 'integer', minimum: 1, maximum: 12 } }, required: ['number'] },
     signedIn: false,
     run: ({ lectures }, args) => {
       const found = lectures.find((l) => l.number === args?.number);

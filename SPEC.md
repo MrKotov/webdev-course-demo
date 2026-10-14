@@ -34,7 +34,7 @@ books a block and cancels their own booking.
 - No dependency at all, including for OAuth, the model call and coverage. Everything
   used here is in the Node standard library, which is what keeps `npm ci` instant and
   the Dockerfile a single stage. A model running locally would break this constraint,
-  and that is the reason this project uses a hosted one — see "The model feature".
+  and that is the reason this project uses a hosted one; see "The model feature".
 
 ## The model feature
 
@@ -46,7 +46,7 @@ books a block and cancels their own booking.
 - **Output:** one pick from that list and a one-sentence reason, forced into a fixed
   JSON shape by the provider's response schema.
 - **When it fails:** no key, a timeout, a 429 or a reply in the wrong shape all produce
-  the same thing — no answer — and the app falls back to its own rule, the earliest free
+  the same thing (no answer) and the app falls back to its own rule, the earliest free
   block that has enough seats. The user gets a worse suggestion, labelled as the app's
   rule rather than a suggestion, instead of an error. `src/services/suggest.js` also
   re-checks whatever the model picked against the real list, so an invented workstation
@@ -55,8 +55,8 @@ books a block and cancels their own booking.
   fit Render's free 512 MB. Stated here because the choice is a trade-off, not an obvious
   right answer: a local model would cost nothing per call and leak nothing.
 - **What leaves the app:** the typed sentence and the free-slot list. No names, no
-  e-mail addresses, no booking history. Nothing about a call is logged except its shape
-  — see `migrations/005_model_calls.sql`.
+  e-mail addresses, no booking history. Nothing about a call is logged except its shape.
+  See `migrations/005_model_calls.sql`.
 
 ## Auth
 
@@ -97,7 +97,7 @@ acts as that person and may do exactly what they may do.
 Plain HTML, ES modules and one hand-written stylesheet; no framework and no build step.
 Three screens: sign in, book (suggestion, manual form, my bookings), and one whole day.
 Colour, spacing, type and radius all come from tokens at the top of `src/web/style.css`.
-Every list has four states — loading, empty, error, success. The graded checklist and the
+Every list has four states: loading, empty, error, success. The graded checklist and the
 evidence are in `docs/UI.md`.
 
 ## Architecture
@@ -124,7 +124,7 @@ service function with the same user id. That is why a rule written in a route ha
 protects one caller and a rule written in a service protects both.
 
 **Where this codebase does not match its own layering:** `src/services/catalog.js` is a
-pass-through — it reshapes rows and holds no rule at all, so the layer earns nothing there.
+pass-through: it reshapes rows and holds no rule at all, so the layer earns nothing there.
 It is kept for symmetry, so that every route talks to a service and a reader never has to
 ask which ones are special. That is a deliberate trade of one honest inconsistency for a
 rule with no exceptions.
@@ -158,7 +158,7 @@ rule with no exceptions.
 
 ### Slice 5: the suggestion
 - [AC-18] A suggestion the model picked from the offered list is returned with `source: "model"`.
-- [AC-19] A pick that is not in the offered list — invented, or taken while the model was thinking — is discarded, and the answer falls back to the app's rule.
+- [AC-19] A pick that is not in the offered list (invented, or taken while the model was thinking) is discarded, and the answer falls back to the app's rule.
 - [AC-20] With no answer from the provider, the endpoint still answers 200 with `source: "fallback"` and the earliest free block that has enough seats.
 - [AC-21] A day with nothing free for that many people answers with no suggestion rather than a wrong one.
 - [AC-22] Every call is recorded in `model_calls` with its outcome, and no column of that table holds what the user typed.
@@ -227,7 +227,7 @@ The later slices, added when the project grew to its full shape:
    rules live. The flow moved to `src/services/oauth.js`, the one network call to
    `src/providers/google.js`.
 4. Asked for the suggestion feature, it wrote a working call to the model and no
-   fallback at all — so the feature, and the page around it, simply failed without a
+   fallback at all, so the feature, and the page around it, simply failed without a
    key. The guard that re-checks the model's pick was also missing, and that is the more
    interesting omission: the code was correct for every answer the model gets right.
 5. Asked to expose the bookings over MCP, it wrote fresh SQL in the tool handlers. It

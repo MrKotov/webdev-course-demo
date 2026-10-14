@@ -39,7 +39,7 @@ protects both. Every rule in this project is in a service for that reason.
 
 ## The model feature
 - `src/model/gemini.js` is the only file that names the provider. Its `ask` returns
-  `null` for every failure — no key, timeout, 429, wrong shape — and the caller always
+  `null` for every failure (no key, timeout, 429, wrong shape), and the caller always
   has a plan.
 - `src/services/suggest.js` re-checks whatever the model picked against the real list
   before anything is offered to a user. Never delete that check.
@@ -60,7 +60,7 @@ protects both. Every rule in this project is in a service for that reason.
 - Every criterion in `SPEC.md` has an id like `AC-12`, and a test whose title names it.
   Adding a criterion means adding a test; the `Traceability` table is the index.
 - Two gates in CI: the service layer and the whole project, each on lines *and* branches.
-  The service branch gate sits just below its current value on purpose — read the comment
+  The service branch gate sits just below its current value on purpose, so read the comment
   in `.github/workflows/ci.yml` before you touch it, and never raise a number by deleting
   code or by writing a test that asserts nothing.
 

@@ -69,8 +69,8 @@ The "My bookings" list:
 
 - **Loading:** three grey blocks the height of a booking row, so nothing moves when the
   real rows arrive.
-- **Empty:** "No bookings yet — Pick a workstation and a block above, and it will appear
-  here." Never a blank area.
+- **Empty:** "No bookings yet", then "Pick a workstation and a block above, and it will
+  appear here." Never a blank area.
 - **Error:** "That did not load", the reason in a sentence, and a **Try again** button.
 - **Success:** the rows, and a message in the live region naming what changed ("WS-01 on
   2026-09-26, 15:30–17:05 is free again").
@@ -79,7 +79,7 @@ The suggestion card has the same four, plus a fifth that matters more: while the
 being asked, it shows "Looking for something that fits…" with an animated marker, because
 a model call plus a cold start can run past forty seconds and a still button reads as broken.
 
-**How I checked:** each state forced in the browser — loading by throttling the network,
+**How I checked:** each state forced in the browser: loading by throttling the network,
 empty by cancelling everything, error by making `fetch` reject, success by booking. Screenshots
 are in `docs/UI.md`.
 
@@ -130,12 +130,12 @@ and `grep -rn "console.log" src/` to see what is actually written out.
   workstation-and-block pairs for that day (ids, labels, seat counts, block times). No
   name, no e-mail address, no booking history, nothing about other people.
 - **What is kept:** for every call, the model name, how long it took, the token counts the
-  provider reported and whether it worked. Deliberately not the prompt —
+  provider reported and whether it worked. Deliberately not the prompt;
   `migrations/005_model_calls.sql` says why, and `test/suggest.test.js` asserts that no
   column of that table could hold it.
 - **Cost per request:** a suggestion sends roughly 900 input tokens and gets back about 60.
-  At Gemini 2.5 Flash's list price on 2026-09-24 that is about **$0.0004 per suggestion** —
-  around 2,500 suggestions per dollar. The free tier charged nothing, so this is an
+  At Gemini 2.5 Flash's list price on 2026-09-24 that is about **$0.0004 per suggestion**,
+  or around 2,500 suggestions per dollar. The free tier charged nothing, so this is an
   arithmetic exercise, and it is an upper bound: the free tier does not report cache hits.
 - **When the provider is down:** the app answers anyway, with its own rule, and says so on
   the screen. Nothing in the app is unavailable because the model is.
@@ -161,7 +161,7 @@ pricing page on 2026-09-24.
 - **Not deployed.** The MCP server runs beside a developer's agent over stdio, not on
   Render. Nothing exposes it over the network, which is the reason it can be this simple.
 - **Whatever is true of the API is true here.** Every tool calls the same service function
-  a route calls, so a rule enforced there is enforced for both — and anything missing there
+  a route calls, so a rule enforced there is enforced for both, and anything missing there
   is missing for both. That is the correct consequence of the design and the reason the
   review in Exercise 5 should read the services rather than the routes.
 
